@@ -7,14 +7,14 @@ import matplotlib.pyplot as plt
 
 
 class UNet_Label_Gen():
-    def __init__(self, img):
+    def __init__(self):
         self.model = tf.keras.models.load_model(
             "./../Code/models/single_rgb_image")
+
+    def get_mean_alias_value_for_whole_picture(self, img, skip_every_nth=1, n_channels=3):
         self.BUCKET_SIZE = 60
         self.steps_horizontal = img.shape[0] / self.BUCKET_SIZE
         self.steps_vertikal = img.shape[1] / self.BUCKET_SIZE
-
-    def get_mean_alias_value_for_whole_picture(self, img, skip_every_nth=1, n_channels=3):
         alias_values = []
         for y in range(int(self.steps_vertikal)):
             if y % skip_every_nth != 0:

@@ -16,16 +16,16 @@ img_aligned = imread(
     f"{CLEAN_ALIGNED_PATH}\{os.listdir(CLEAN_ALIGNED_PATH)[0]}")
 
 
+labelGen = UNet_Label_Gen()
+
+
 fourier_handler = Fourier_Images(img_filmed, img_aligned)
-labelGen = UNet_Label_Gen(img)
-
-
 mask = fourier_handler.generate_mask_from_images()
 processed_image = fourier_handler.replace_masked_sections_and_return_resulting_img()
 
-# plt.imshow(mask, cmap="gray")
-# plt.show()
-# plt.imshow(processed_image, cmap="gray")
-# plt.show()
+plt.imshow(mask, cmap="gray")
+plt.show()
+plt.imshow(processed_image)
+plt.show()
 
 print(labelGen.get_mean_alias_value_for_whole_picture(processed_image))
