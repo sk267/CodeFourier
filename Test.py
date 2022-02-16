@@ -6,6 +6,8 @@ from UNet_Fourier_Facilities import UNet_Label_Gen, Fourier_Images
 from skimage.io import imread
 import os
 
+from UNet_Fourier_Facilities_Fake import UNet_Label_Gen_Fake
+
 img = imread("./Tests/orig.jpg")
 
 FILMED_PATH = "D:\\Main\\MA_PROGR\\Data\\Train\\UNet_Train\\water\\filmed_small"
@@ -16,16 +18,19 @@ img_aligned = imread(
     f"{CLEAN_ALIGNED_PATH}\{os.listdir(CLEAN_ALIGNED_PATH)[0]}")
 
 
-labelGen = UNet_Label_Gen()
-
-
+labelGenFake = UNet_Label_Gen_Fake()
 fourier_handler = Fourier_Images(img_filmed, img_aligned)
-mask = fourier_handler.generate_mask_from_images()
-processed_image = fourier_handler.replace_masked_sections_and_return_resulting_img()
 
-plt.imshow(mask, cmap="gray")
-plt.show()
-plt.imshow(processed_image)
-plt.show()
 
-print(labelGen.get_mean_alias_value_for_whole_picture(processed_image))
+# for i in range(20):
+#     a = labelGenFake.get_decreasing_alias_value()
+#     print(a)
+# mask = fourier_handler.generate_mask_from_images()
+# processed_image = fourier_handler.replace_masked_sections_and_return_resulting_img()
+
+# plt.imshow(mask, cmap="gray")
+# plt.show()
+# plt.imshow(processed_image)
+# plt.show()
+
+# print(labelGen.get_mean_alias_value_for_whole_picture(processed_image))
