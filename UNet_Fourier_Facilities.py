@@ -132,7 +132,7 @@ class Fourier_Images():
         self.fourier_mask = cv2.dilate(
             self.fourier_mask.astype("uint8"), kernel)
 
-        return self.fourier_mask
+        return (self.img_filmed_fourier_combined, self.img_clean_fourier_combined, self.fourier_mask)
 
     def replace_masked_sections_and_return_resulting_img(self):
 
