@@ -6,6 +6,7 @@ __pycache__/
 *.jpg
 *.png
 *.tif
+u_net_logs
 
 Data
 logs
