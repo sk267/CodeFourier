@@ -8,18 +8,20 @@ import os
 
 from UNet_Fourier_Facilities_Fake import UNet_Label_Gen_Fake
 
-img = imread("./Tests/orig.jpg")
+print(5+3j)
 
-FILMED_PATH = "D:\\Main\\MA_PROGR\\Data\\Train\\UNet_Train\\water\\filmed_small"
-CLEAN_ALIGNED_PATH = "D:\\Main\\MA_PROGR\\Data\\Train\\UNet_Train\\water\\clean_aligned_small"
+# img = imread("./Tests/orig.jpg")
 
-img_filmed = imread(f"{FILMED_PATH}\{os.listdir(FILMED_PATH)[0]}")
-img_aligned = imread(
-    f"{CLEAN_ALIGNED_PATH}\{os.listdir(CLEAN_ALIGNED_PATH)[0]}")
+# FILMED_PATH = "D:\\Main\\MA_PROGR\\Data\\Train\\UNet_Train\\water\\filmed_small"
+# CLEAN_ALIGNED_PATH = "D:\\Main\\MA_PROGR\\Data\\Train\\UNet_Train\\water\\clean_aligned_small"
+
+# img_filmed = imread(f"{FILMED_PATH}\{os.listdir(FILMED_PATH)[0]}")
+# img_aligned = imread(
+#     f"{CLEAN_ALIGNED_PATH}\{os.listdir(CLEAN_ALIGNED_PATH)[0]}")
 
 
-labelGenFake = UNet_Label_Gen_Fake()
-fourier_handler = Fourier_Images(img_filmed, img_aligned)
+# labelGenFake = UNet_Label_Gen_Fake()
+# fourier_handler = Fourier_Images(img_filmed, img_aligned)
 
 
 # for i in range(20):
