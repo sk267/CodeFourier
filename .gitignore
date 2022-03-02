@@ -7,6 +7,9 @@ __pycache__/
 *.png
 *.tif
 u_net_logs
+.vscode
+models
+
 
 Data
 logs
