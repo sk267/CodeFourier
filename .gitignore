@@ -3,6 +3,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+*.jpg
+*.png
+*.tif
+u_net_logs
+.vscode
+models
+
+
+Data
+logs
+*.ntp
+
 # C extensions
 *.so
 
