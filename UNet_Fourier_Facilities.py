@@ -5,6 +5,8 @@ import cv2
 from skimage.exposure import adjust_gamma
 import matplotlib.pyplot as plt
 
+TMP_SAVE = "D:\\Main\\MA_PROGR\\Data\\Train\\UNet_Train"
+
 
 class UNet_Label_Gen():
     def __init__(self):
