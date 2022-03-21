@@ -99,40 +99,48 @@ class Fourier_Images():
         self.img_clean_fourier_g = self.grayscale_2_Fourier(img_clean_g)
         self.img_clean_fourier_b = self.grayscale_2_Fourier(img_clean_b)
 
-        self.img_filmed_fourier_combined = self.combine_3_fourier_to_one_grayscale(
-            self.img_filmed_fourier_r, self.img_filmed_fourier_g, self.img_filmed_fourier_b
-        )
-
-        self.img_clean_fourier_combined = self.combine_3_fourier_to_one_grayscale(
-            self.img_clean_fourier_r, self.img_clean_fourier_g, self.img_clean_fourier_b
-        )
-
         DILATE_KERNEL_SIZE = (10, 10)
 
         # A - B (Filmed - Clean)
-        self.fourier_mask = self.img_filmed_fourier_combined - \
-            self.img_clean_fourier_combined
+        self.fourier_mask_r = self.img_filmed_fourier_r - \
+            self.img_clean_fourier_r
+        self.fourier_mask_g = self.img_filmed_fourier_g - \
+            self.img_clean_fourier_g
+        self.fourier_mask_b = self.img_filmed_fourier_b - \
+            self.img_clean_fourier_b
         # plt.imshow(fourier_mask, cmap="gray")
         # plt.show()
 
         # normalize image
-        self.fourier_mask = self.normalize_0_1(self.fourier_mask)
+        self.fourier_mask_r = self.normalize_0_1(self.fourier_mask_r)
+        self.fourier_mask_g = self.normalize_0_1(self.fourier_mask_g)
+        self.fourier_mask_b = self.normalize_0_1(self.fourier_mask_b)
 
         # Blur Image
-        self.fourier_mask = cv2.blur(self.fourier_mask, (6, 6))
+        self.fourier_mask_r = cv2.blur(self.fourier_mask_r, (6, 6))
+        self.fourier_mask_g = cv2.blur(self.fourier_mask_g, (6, 6))
+        self.fourier_mask_b = cv2.blur(self.fourier_mask_b, (6, 6))
 
         # Enlarge Contrast
-        self.fourier_mask = adjust_gamma(self.fourier_mask, 15)
+        self.fourier_mask_r = adjust_gamma(self.fourier_mask_r, 15)
+        self.fourier_mask_g = adjust_gamma(self.fourier_mask_g, 15)
+        self.fourier_mask_b = adjust_gamma(self.fourier_mask_b, 15)
 
         # Threshold Image
-        self.fourier_mask = np.where(self.fourier_mask > 0.0005, 1, 0)
+        self.fourier_mask_r = np.where(self.fourier_mask_r > 0.0005, 1, 0)
+        self.fourier_mask_g = np.where(self.fourier_mask_g > 0.0005, 1, 0)
+        self.fourier_mask_b = np.where(self.fourier_mask_b > 0.0005, 1, 0)
 
         # Dilate Image
         kernel = np.ones(DILATE_KERNEL_SIZE, np.float)
-        self.fourier_mask = cv2.dilate(
-            self.fourier_mask.astype("uint8"), kernel)
+        self.fourier_mask_r = cv2.dilate(
+            self.fourier_mask_r.astype("uint8"), kernel)
+        self.fourier_mask_g = cv2.dilate(
+            self.fourier_mask_r.astype("uint8"), kernel)
+        self.fourier_mask_b = cv2.dilate(
+            self.fourier_mask_r.astype("uint8"), kernel)
 
-        return (self.img_filmed_fourier_combined, self.img_clean_fourier_combined, self.fourier_mask)
+        return (self.img_filmed_fourier_combined, self.img_clean_fourier_combined, self.fourier_mask_r, self.fourier_mask_g, self.fourier_mask_b)
 
     def replace_masked_sections_and_return_resulting_img(self):
 
