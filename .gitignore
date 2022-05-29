@@ -9,7 +9,7 @@ __pycache__/
 u_net_logs
 .vscode
 models
-
+cnn_models
 
 Data
 logs
