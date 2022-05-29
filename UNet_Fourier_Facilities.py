@@ -99,6 +99,7 @@ class Fourier_Images():
         self.img_clean_fourier_g = self.grayscale_2_Fourier(img_clean_g)
         self.img_clean_fourier_b = self.grayscale_2_Fourier(img_clean_b)
 
+
         self.img_filmed_fourier_combined = self.combine_3_fourier_to_one_grayscale(
             self.img_filmed_fourier_r, self.img_filmed_fourier_g, self.img_filmed_fourier_b
         )
@@ -132,7 +133,7 @@ class Fourier_Images():
         self.fourier_mask = cv2.dilate(
             self.fourier_mask.astype("uint8"), kernel)
 
-        return (self.img_filmed_fourier_combined, self.img_clean_fourier_combined, self.fourier_mask)
+        return (self.img_filmed_fourier_combined, self.img_clean_fourier_combined, self.fourier_mask, self.f2pd(self.img_filmed_fourier_r), self.f2pd(self.img_clean_fourier_r))
 
     def replace_masked_sections_and_return_resulting_img(self):
 
