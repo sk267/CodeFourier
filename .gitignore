@@ -9,7 +9,8 @@ __pycache__/
 u_net_logs
 .vscode
 models
-
+cnn_models
+tmp
 
 Data
 logs
