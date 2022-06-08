@@ -55,6 +55,7 @@ class Fourier_Images():
     def f2pd(self, fourier_array):
         # transoforms an fourier image into pixel domain in order
         # to display it
+        # old:
         return (np.log(abs(fourier_array)))
 
     def normalize_0_1(self, img):
@@ -70,42 +71,45 @@ class Fourier_Images():
         return (img_r, img_g, img_b)
 
     def grayscale_2_Fourier(self, img):
-        return(np.fft.fftshift(np.fft.fft2(img)))
+        # return(np.fft.fftshift(np.fft.fft2(img))) #old
+        return tf.signal.fft2d(img)
 
     def inverse_fourier(self, fourier_array):
-        return(abs(np.fft.ifft2(fourier_array)))
+        return abs(np.fft.ifft2(fourier_array))
 
     def combine_3_fourier_to_one_grayscale(self, im1, im2, im3):
         img_combined = np.zeros((self.IMG_HEIGHT, self.IMG_WIDTH))
-        im1 = self.f2pd(im1) * self.RGB_WEIGHTS[0]
-        im2 = self.f2pd(im2) * self.RGB_WEIGHTS[1]
-        im3 = self.f2pd(im3) * self.RGB_WEIGHTS[2]
+        im1 = self.f2pd(im1)  # * self.RGB_WEIGHTS[0]
+        im2 = self.f2pd(im2)  # * self.RGB_WEIGHTS[1]
+        im3 = self.f2pd(im3)  # * self.RGB_WEIGHTS[2]
         img_combined = im1 + im2 + im3
-        return (img_combined)
 
-    def generate_mask_from_images(self):
+        # put values between 0 - 1:
+        max_value = np.array(img_combined).max
+        img_combined = img_combined / max_value
+
+        return img_combined
+
+    def generate_mask_from_images(self,
+                                  img_filmed_complex_r,
+                                  img_filmed_complex_g,
+                                  img_filmed_complex_b,
+                                  img_clean_complex_r,
+                                  img_clean_complex_g,
+                                  img_clean_complex_b
+                                  ):
         # split to separate grayscale images
-        img_filmed_r, img_filmed_g, img_filmed_b = self.split_RGB_2_Grayscale(
-            self.image_filmed)
-        img_clean_r, img_clean_g, img_clean_b = self.split_RGB_2_Grayscale(
-            self.img_aligned)
-
-        # transform to fourier
-        self.img_filmed_fourier_r = self.grayscale_2_Fourier(img_filmed_r)
-        self.img_filmed_fourier_g = self.grayscale_2_Fourier(img_filmed_g)
-        self.img_filmed_fourier_b = self.grayscale_2_Fourier(img_filmed_b)
-
-        self.img_clean_fourier_r = self.grayscale_2_Fourier(img_clean_r)
-        self.img_clean_fourier_g = self.grayscale_2_Fourier(img_clean_g)
-        self.img_clean_fourier_b = self.grayscale_2_Fourier(img_clean_b)
-
 
         self.img_filmed_fourier_combined = self.combine_3_fourier_to_one_grayscale(
-            self.img_filmed_fourier_r, self.img_filmed_fourier_g, self.img_filmed_fourier_b
+            img_filmed_complex_r,
+            img_filmed_complex_g,
+            img_filmed_complex_b
         )
 
         self.img_clean_fourier_combined = self.combine_3_fourier_to_one_grayscale(
-            self.img_clean_fourier_r, self.img_clean_fourier_g, self.img_clean_fourier_b
+            img_clean_complex_r,
+            img_clean_complex_g,
+            img_clean_complex_b
         )
 
         DILATE_KERNEL_SIZE = (10, 10)
