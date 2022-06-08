@@ -85,8 +85,8 @@ class Fourier_Images():
         img_combined = im1 + im2 + im3
 
         # put values between 0 - 1:
-        max_value = np.array(img_combined).max
-        img_combined = img_combined / max_value
+        max_value = np.max(np.array(img_combined))
+        img_combined /= max_value
 
         return img_combined
 
