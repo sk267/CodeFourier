@@ -12,9 +12,7 @@ importlib.reload(Helper_Generate_Mask_From_Images)
 
 # ppm: postprocessing model
 
-
 def tf_inv_fourier_trans(img):
-    # return tf.math.round(tf.math.real(tf.signal.ifft2d(img)))
     return tf.math.real(tf.signal.ifft2d(img))
 
 
@@ -77,16 +75,6 @@ def do_image_blending_and_stack_grayscale_to_rgb(
 
     u_net_output_t2c = tf.complex(unet_output, zeros)
 
-    # print(img_clean_complex_r)
-    # print(img_filmed_complex_r)
-
-    # print("img_clean_complex_r")
-    # plt.imshow(np.log(abs(img_clean_complex_r)))
-    # plt.show()
-    # print("img_filmed_complex_r")
-    # plt.imshow(np.log(abs(img_filmed_complex_r)))
-    # plt.show()
-
     img_processed_complex_fourier_r = soft_blending(
         img_clean_complex_r,
         img_filmed_complex_r,
@@ -107,16 +95,6 @@ def do_image_blending_and_stack_grayscale_to_rgb(
         ones_t2c,
         u_net_output_t2c
     )
-
-    # print("sollten identisch aussehen: ")
-    # print("img_filmed_complex_r: ")
-    # print(img_filmed_complex_r)
-    # print("img_processed_complex_fourier_r: ")
-    # print(img_processed_complex_fourier_r)
-    # plt.imshow(tf_inv_fourier_trans(img_filmed_complex_r), cmap="gray")
-    # plt.show()
-    # plt.imshow(np.log(abs(img_processed_complex_fourier_r)))
-    # plt.show()
 
     # ----------- INVERSE FOURIER TRANSFORMATION -----------
 
@@ -144,27 +122,11 @@ def do_image_blending_and_stack_grayscale_to_rgb(
     # plt.imshow(img_processed_rgb*255)
     # plt.show()
 
-    # print("r: ")
-    # print(img_processed_r[50])
-    # print("g: ")
-    # print(img_processed_g[50])
-    # print("b: ")
-    # print(img_processed_b[50])
-    # print("rgb: ")
-    # print(img_processed_rgb[50])
-
     img_processed_rgb = img_processed_rgb
     img_processed_rgb = Helper_Generate_Mask_From_Images.normalize_0_1(
         img_processed_rgb)
 
     img_processed_rgb = tf.reshape(
         img_processed_rgb, (1, IMG_WIDTH, IMG_HEIGHT, 3))
-
-    # print("img_processed_rgb nach reshape[0]: ")
-    # print(img_processed_rgb[0][0])
-    # print("img_processed_rgb nach reshape[50]: ")
-    # print(img_processed_rgb[0][50])
-    # print("img_processed_rgb nach reshape[100]: ")
-    # print(img_processed_rgb[0][100])
 
     return (img_processed_rgb, img_processed_r, u_net_output_t2c)
