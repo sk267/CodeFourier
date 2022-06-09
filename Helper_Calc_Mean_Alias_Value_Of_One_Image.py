@@ -1,11 +1,17 @@
-
-from pydoc import Helper
-import tensorflow as tf
-from UNet_Fourier_Facilities import Fourier_Images
-import matplotlib.pyplot as plt
+# from Helper_Generate_Mask_From_Images import generate_mask_from_images
+# from Helper_Do_Postprocessing_Stuff import do_image_blending_and_stack_grayscale_to_rgb
+import importlib
 import numpy as np
+import matplotlib.pyplot as plt
+from UNet_Fourier_Facilities import Fourier_Images
+import tensorflow as tf
+from pydoc import Helper
 
-from Helper_Generate_Mask_From_Images import generate_mask_from_images
+import Helper_Generate_Mask_From_Images
+import Helper_Do_Postprocessing_Stuff
+
+importlib.reload(Helper_Generate_Mask_From_Images)
+importlib.reload(Helper_Do_Postprocessing_Stuff)
 
 
 def calc_mean_alias_value_of_one_image(
@@ -42,7 +48,7 @@ def calc_mean_alias_value_of_one_image(
     img_clean_complex_g = tf.signal.fft2d(img_clean_g)
     img_clean_complex_b = tf.signal.fft2d(img_clean_b)
 
-    differenzbild_fourier_px = generate_mask_from_images(
+    differenzbild_fourier_px = Helper_Generate_Mask_From_Images.generate_mask_from_images(
         img_filmed_complex_r, img_filmed_complex_g, img_filmed_complex_b, img_clean_complex_r, img_clean_complex_g,  img_clean_complex_b
     )
     # plt.imsave(".\\tmp\\img_filmed_fourier_combined.png",
@@ -79,9 +85,7 @@ def calc_mean_alias_value_of_one_image(
 
     # u_net_output = np.zeros((IMG_WIDTH, IMG_HEIGHT))
 
-    # NUR ZUM TESTEN
-    u_net_output = tf.multiply(u_net_output, 0)
-    u_net_output = tf.add(u_net_output, 0.5)
+
 
     # if show_intermediate_pics:
     #     print("u_net_output test: ")
@@ -100,25 +104,21 @@ def calc_mean_alias_value_of_one_image(
         u_net_output, shape=(IMG_WIDTH, IMG_HEIGHT))
 
     img_clean_complex_r = tf.reshape(
-        img_clean_complex_r, (1, IMG_WIDTH, IMG_HEIGHT, 1))
+        img_clean_complex_r, (IMG_WIDTH, IMG_HEIGHT))
     img_clean_complex_g = tf.reshape(
-        img_clean_complex_g, (1, IMG_WIDTH, IMG_HEIGHT, 1))
+        img_clean_complex_g, (IMG_WIDTH, IMG_HEIGHT))
     img_clean_complex_b = tf.reshape(
-        img_clean_complex_b, (1, IMG_WIDTH, IMG_HEIGHT, 1))
+        img_clean_complex_b, (IMG_WIDTH, IMG_HEIGHT))
     img_filmed_complex_r = tf.reshape(
-        img_filmed_complex_r, (1, IMG_WIDTH, IMG_HEIGHT, 1))
+        img_filmed_complex_r, (IMG_WIDTH, IMG_HEIGHT))
     img_filmed_complex_g = tf.reshape(
-        img_filmed_complex_g, (1, IMG_WIDTH, IMG_HEIGHT, 1))
+        img_filmed_complex_g, (IMG_WIDTH, IMG_HEIGHT))
     img_filmed_complex_b = tf.reshape(
-        img_filmed_complex_b, (1, IMG_WIDTH, IMG_HEIGHT, 1))
+        img_filmed_complex_b, (IMG_WIDTH, IMG_HEIGHT))
 
     # ------------ postprocessing Model aufrufen --------
 
-    # HIERHER
-
-    image_processed_rgb, img_processed_r, u_net_output_complex = execute_postprocessing_model([
-        x_clean,
-        x_filmed,
+    image_processed_rgb, img_processed_r, u_net_output_complex = Helper_Do_Postprocessing_Stuff.do_image_blending_and_stack_grayscale_to_rgb(
         u_net_output,
         img_clean_complex_r,
         img_clean_complex_g,
@@ -126,16 +126,7 @@ def calc_mean_alias_value_of_one_image(
         img_filmed_complex_r,
         img_filmed_complex_g,
         img_filmed_complex_b,
-    ])
-
-    # tmp = img_processed_r
-    # tmp = np.array(tmp).reshape(IMG_WIDTH, IMG_HEIGHT)
-    # print("-------------------------------> img_processed_r: ")
-    # plt.imshow(tmp, cmap="gray")
-    # plt.show()
-
-    # print("#################################> u_net_output_complex: ")
-    # print(u_net_output_complex)
+    )
 
     if show_intermediate_pics:
         print("image_processed_rgb: ")
