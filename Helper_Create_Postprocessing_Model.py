@@ -41,6 +41,7 @@ def create_postprocessing_model():
     # u_net_output_t2c = tf.complex(ones, zeros)
 
     def soft_blending(clean, filmed, ones_t2c=ones_t2c, u_net_output_t2c=u_net_output_t2c):
+        print("++++++++++++++++++++++++++++ Betrete Softblenging!!")
         zw1 = tf.math.subtract(ones_t2c, u_net_output_t2c)
         zw1 = tf.math.multiply(zw1, clean)
 

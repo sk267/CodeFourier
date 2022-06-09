@@ -79,6 +79,10 @@ def calc_mean_alias_value_of_one_image(
 
     # u_net_output = np.zeros((IMG_WIDTH, IMG_HEIGHT))
 
+    # NUR ZUM TESTEN
+    u_net_output = tf.multiply(u_net_output, 0)
+    u_net_output = tf.add(u_net_output, 0.5)
+
     # if show_intermediate_pics:
     #     print("u_net_output test: ")
     #     plt.imshow(u_net_output, cmap="gray")

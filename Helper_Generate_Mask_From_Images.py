@@ -5,7 +5,7 @@ from skimage.exposure import adjust_gamma
 IMG_HEIGHT, IMG_WIDTH = 128, 128
 
 
-def f2pd(self, fourier_array):
+def f2pd(fourier_array):
     # transoforms an fourier image into pixel domain in order
     # to display it
     # old:
