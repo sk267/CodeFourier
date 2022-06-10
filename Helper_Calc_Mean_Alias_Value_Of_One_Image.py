@@ -20,7 +20,6 @@ def calc_mean_alias_value_of_one_image(
         show_intermediate_pics,
         IMG_WIDTH,
         IMG_HEIGHT,
-        execute_postprocessing_model,
         execute_cnn_model,
         execute_UNet_model
 ):
@@ -84,8 +83,6 @@ def calc_mean_alias_value_of_one_image(
         plt.show()
 
     # u_net_output = np.zeros((IMG_WIDTH, IMG_HEIGHT))
-
-
 
     # if show_intermediate_pics:
     #     print("u_net_output test: ")
